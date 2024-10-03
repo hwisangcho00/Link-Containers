@@ -108,15 +108,26 @@ impl<T: Ord> TreeNode<T> {
 // Implement `Default` for `TreeNode<T>`
 impl<T: Ord> Default for TreeNode<T> {
     fn default() -> Self {
-        todo!()
+        TreeNode::Leaf
     }
 }
 
 // Implement `PartialEq` for `TreeNode<T>`
-// TODO:
+impl<T:Ord> PartialEq for TreeNode<T> {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Leaf, Self::Leaf) => true,
+            (Self::Node(v1, lt1, rt1), Self::Node(v2, lt2, rt2)) =>
+                {
+                    v1 == v2 && lt1 == lt2 && rt1 == rt2
+                },
+            _ => false,
+        }
+    }
+}
 
 // Implement `Eq` for `TreeNode<T>`
-// TODO:
+impl<T:Ord> Eq for TreeNode<T> {}
 
 // Implement `From<Vec<T>>` for `TreeNode<T>`
 // TODO:
