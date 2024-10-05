@@ -82,9 +82,7 @@ impl<T: Ord> TreeNode<T> {
     /// After insertion, the tree is rebalanced if necessary
     pub fn insert(&mut self, value: T) {
         match self {
-            TreeNode::Leaf => {
-                *self = Self::node(value, TreeNode::Leaf, TreeNode::Leaf)
-            },
+            TreeNode::Leaf => *self = Self::node(value, TreeNode::Leaf, TreeNode::Leaf),
             TreeNode::Node(v, lt, rt) => {
                 if &value < v {
                     lt.insert(value);
@@ -124,24 +122,52 @@ impl<T: Ord> Default for TreeNode<T> {
 }
 
 // Implement `PartialEq` for `TreeNode<T>`
-impl<T:Ord> PartialEq for TreeNode<T> {
+impl<T: Ord> PartialEq for TreeNode<T> {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Leaf, Self::Leaf) => true,
-            (Self::Node(v1, lt1, rt1), Self::Node(v2, lt2, rt2)) =>
-                {
-                    v1 == v2 && lt1 == lt2 && rt1 == rt2
-                },
+            (Self::Node(v1, lt1, rt1), Self::Node(v2, lt2, rt2)) => {
+                v1 == v2 && lt1 == lt2 && rt1 == rt2
+            }
             _ => false,
         }
     }
 }
 
 // Implement `Eq` for `TreeNode<T>`
-impl<T:Ord> Eq for TreeNode<T> {}
+impl<T: Ord> Eq for TreeNode<T> {}
 
 // Implement `From<Vec<T>>` for `TreeNode<T>`
-// TODO:
+impl<T: Ord> From<Vec<T>> for TreeNode<T> {
+    fn from(value: Vec<T>) -> Self {
+        let mut res = TreeNode::Leaf;
+
+        for val in value {
+            res.insert(val);
+        }
+
+        res
+
+    }
+}
 
 // Implement `From<TreeNode<T>>` for `Vec<T>`
-// TODO:
+impl<T: Ord> From<TreeNode<T>> for Vec<T> {
+    fn from(value: TreeNode<T>) -> Self {
+        let mut res = Vec::new();
+    
+        fn inorder_traversal<T: Ord>(tree: TreeNode<T>, res: &mut Vec<T>) {
+            match tree {
+                TreeNode::Leaf => (),
+                TreeNode::Node(v, lt, rt) => {
+                    inorder_traversal(*lt, res);
+                    res.push(v);
+                    inorder_traversal(*rt, res);
+                }
+            }
+        }
+
+        inorder_traversal(value, &mut res);
+        res
+    }
+}

@@ -9,22 +9,22 @@ pub enum ListNode<T> {
 }
 
 impl<T> ListNode<T> {
-  // Use the implementation of this method to guide your implementation of
-  // `insert` and `reverse`
-  /// Deletes a node from the list
-  pub fn delete(&mut self) {
-    // Temporarily replaces the current node with default value (Nil).
-    // In exchange, we get to take ownership of the current node instead of just
-    // having it by mutable reference.
-    let as_owned: ListNode<T> = mem::take(self);
-    match as_owned {
-      ListNode::Nil => {}
-      ListNode::Cons(_, next) => {
-        // Write the next node to the current node
-        *self = *next;
-      }
+    // Use the implementation of this method to guide your implementation of
+    // `insert` and `reverse`
+    /// Deletes a node from the list
+    pub fn delete(&mut self) {
+        // Temporarily replaces the current node with default value (Nil).
+        // In exchange, we get to take ownership of the current node instead of just
+        // having it by mutable reference.
+        let as_owned: ListNode<T> = mem::take(self);
+        match as_owned {
+            ListNode::Nil => {}
+            ListNode::Cons(_, next) => {
+                // Write the next node to the current node
+                *self = *next;
+            }
+        }
     }
-  }
 }
 
 // Required methods for `ListNode<T>`
@@ -40,10 +40,8 @@ impl<T> ListNode<T> {
             ListNode::Nil => {
                 *self = ListNode::Cons(value, Box::new(ListNode::Nil));
                 self
-            },
-            ListNode::Cons(_, ref mut t) => {
-                t.insert(value)
             }
+            ListNode::Cons(_, ref mut t) => t.insert(value),
         }
     }
     /// Reverses the list in place.
@@ -53,7 +51,9 @@ impl<T> ListNode<T> {
 
         loop {
             match cur {
-                ListNode::Nil => {break;},
+                ListNode::Nil => {
+                    break;
+                }
                 ListNode::Cons(h, t) => {
                     let next = *t;
                     cur = prev;
@@ -78,9 +78,9 @@ impl<T> Default for ListNode<T> {
 impl<T: PartialEq> PartialEq for ListNode<T> {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-        (ListNode::Nil, ListNode::Nil) => true,
-        (ListNode::Cons(h1, t1), ListNode::Cons(h2, t2)) => (h1 == h2) && t1 == t2,
-        _ => false,
+            (ListNode::Nil, ListNode::Nil) => true,
+            (ListNode::Cons(h1, t1), ListNode::Cons(h2, t2)) => (h1 == h2) && t1 == t2,
+            _ => false,
         }
     }
 }
@@ -92,8 +92,8 @@ impl<T: Eq> Eq for ListNode<T> {}
 impl<T: Display> Display for ListNode<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-          ListNode::Nil => write!(f, "Nil"),
-          ListNode::Cons(head, tail) => write!(f, "{} -> {}", head, tail)
+            ListNode::Nil => write!(f, "Nil"),
+            ListNode::Cons(head, tail) => write!(f, "{} -> {}", head, tail),
         }
     }
 }
@@ -118,7 +118,9 @@ impl<T> From<ListNode<T>> for Vec<T> {
         let mut cur = value;
         loop {
             match cur {
-                ListNode::Nil => {break;},
+                ListNode::Nil => {
+                    break;
+                }
                 ListNode::Cons(h, t) => {
                     res.push(h);
                     cur = *t;
