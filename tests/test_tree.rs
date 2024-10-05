@@ -147,7 +147,7 @@ fn test_insert_same_5() {
 }
 
 /// This test checks that right rotation works correctly.
-/*
+
 #[test]
 fn test_rotate_right_5() {
     let mut t = TreeNode::Node(
@@ -181,10 +181,10 @@ fn test_rotate_right_5() {
     t.right_rotate();
     assert_eq!(t, expected);
 }
-*/
+
 
 /// This test checks that left rotation works correctly.
-/*
+
 #[test]
 fn test_rotate_left_5() {
     let mut t = TreeNode::Node(
@@ -218,7 +218,7 @@ fn test_rotate_left_5() {
     t.left_rotate();
     assert_eq!(t, expected);
 }
-*/
+
 
 /// This test checks that the tree is balanced after inserting a few values.
 #[test]
@@ -267,7 +267,7 @@ fn test_insert_5() {
 /// and checks that a property holds for all of them.
 /// In this case, the property is that adding all the elements from a `Vec<i32>` to a `TreeNode<i32>`
 /// and converting it back to a `Vec<i32>` should yield the same `Vec<i32>` you started with.
-/*
+
 #[test]
 fn test_insert_roundtrip_10() {
     fn roundtrip(v: Vec<i32>) -> bool {
@@ -294,6 +294,6 @@ fn test_insert_roundtrip_10() {
     }
     quickcheck(roundtrip as fn(Vec<i32>) -> bool);
 }
-*/
+
 
 const _UNUSED: bool = true;

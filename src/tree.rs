@@ -91,27 +91,85 @@ impl<T: Ord> TreeNode<T> {
                 }
             }
         }
+        self.rebalance();
     }
 
     /// Computes the balance factor of the tree (the difference between the height of the left and right subtrees)
     fn balance_factor(&self) -> i32 {
-        todo!()
+        match self {
+            TreeNode::Leaf => 0,
+            TreeNode::Node(_, left, right) => left.height() as i32 - right.height() as i32,
+        }
     }
 
     /// Performs a left rotation on the tree
     pub fn left_rotate(&mut self) {
-        todo!()
+        match mem::take(self) {
+            TreeNode::Node(value, left, right) => {
+                match *right {
+                    TreeNode::Node(right_value, right_left, right_right) => {
+                        *self = TreeNode::Node(
+                            right_value,
+                            Box::new(TreeNode::Node(value, left, right_left)),
+                            right_right
+                        );
+                    },
+                    TreeNode::Leaf => {
+                        *self = TreeNode::Node(value, left, Box::new(TreeNode::Leaf));
+                    }
+                }
+            },
+            TreeNode::Leaf => {
+                *self = TreeNode::Leaf;
+            }
+        }
     }
     /// Performs a right rotation on the tree
     pub fn right_rotate(&mut self) {
-        todo!()
+        match mem::take(self) {
+            TreeNode::Node(value, left, right) => {
+                match *left {
+                    TreeNode::Node(left_value, left_left, left_right) => {
+                        *self = TreeNode::Node(
+                            left_value,
+                            left_left,
+                            Box::new(TreeNode::Node(value, left_right, right))
+                        );
+                    },
+                    TreeNode::Leaf => {
+                        *self = TreeNode::Node(value, Box::new(TreeNode::Leaf), right);
+                    }
+                }
+            },
+            TreeNode::Leaf => {
+                *self = TreeNode::Leaf;
+            }
+        }
     }
 
     /// Rebalances the tree using either a single or double rotation, as specified in the AVL tree
     /// rebalancing algorithm.
-    fn rebalance(&mut self) {
-        todo!()
+pub fn rebalance(&mut self) {
+    let bf = self.balance_factor();
+    match self {
+        TreeNode::Leaf => return,
+        TreeNode::Node(_, left, right) => {           
+            if bf == -2 {
+                let right_bf = right.balance_factor();
+                if right_bf == 1 {
+                    right.right_rotate();
+                }
+                self.left_rotate();
+            } else if bf == 2 {
+                let left_bf = left.balance_factor();
+                if left_bf == -1 {
+                    left.left_rotate();
+                }
+                self.right_rotate();
+            }
+        }
     }
+}
 }
 
 // Implement `Default` for `TreeNode<T>`
