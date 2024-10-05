@@ -68,12 +68,12 @@ impl<T: Ord> TreeNode<T> {
 impl<T: Ord> TreeNode<T> {
     /// Creates a new `TreeNode<T>` with value `value` and children `left` and `right`
     pub fn node(value: T, left: TreeNode<T>, right: TreeNode<T>) -> TreeNode<T> {
-        todo!()
+        TreeNode::Node(value, Box::new(left), Box::new(right))
     }
 
     /// Creates a new `TreeNode<T>` with no children
     pub fn new() -> TreeNode<T> {
-        todo!()
+        TreeNode::Leaf
     }
 
     /// Inserts a new node with value `value` into the tree. If the value already exists in the tree,
@@ -81,7 +81,18 @@ impl<T: Ord> TreeNode<T> {
     ///
     /// After insertion, the tree is rebalanced if necessary
     pub fn insert(&mut self, value: T) {
-        todo!()
+        match self {
+            TreeNode::Leaf => {
+                *self = Self::node(value, TreeNode::Leaf, TreeNode::Leaf)
+            },
+            TreeNode::Node(v, lt, rt) => {
+                if &value < v {
+                    lt.insert(value);
+                } else if &value > v {
+                    rt.insert(value);
+                }
+            }
+        }
     }
 
     /// Computes the balance factor of the tree (the difference between the height of the left and right subtrees)

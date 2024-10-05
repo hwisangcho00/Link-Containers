@@ -130,7 +130,7 @@ pub fn test_impls_eq_5() {
 
 
 /// This test checks that inserting duplicate values does not affect the tree.
-/*
+
 #[test]
 fn test_insert_same_5() {
     let mut t = TreeNode::new();
@@ -145,7 +145,6 @@ fn test_insert_same_5() {
         TreeNode::Node(1, Box::new(TreeNode::Leaf), Box::new(TreeNode::Leaf))
     );
 }
-*/
 
 /// This test checks that right rotation works correctly.
 /*
